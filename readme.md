@@ -1,6 +1,19 @@
 # STARTER API PACKAGE WITH AUTHENTICATION
 This is starter API creation package
+## INSALLATION
 
+clone the repo
+
+```
+$ git clone https://github.com/ashwaniarya/express-api-starter.git 
+```
+
+Install the dependencies
+
+```
+$ cd express-api-starter
+$ npm install
+```
 ## BASIC FEATURES OF PACKAGE
 * The package consists of API authenticatin using passport-jwt and jsonwebtokens
 * User entry gateway.
