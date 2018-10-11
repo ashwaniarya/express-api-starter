@@ -54,6 +54,7 @@ This endpoint is used to activate user
 This endpoint is used to generate reset link which is sent to user's email.
 
 JSON DATA :
+
 Field | Description | Meta
 ------|-------------|-----
 email| email for which reset link will be genereated| required

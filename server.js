@@ -5,6 +5,8 @@ const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const hbs = require('hbs')
+const {initTelegramBot} = require('./utility/telegram')
+
 dotenv.load()
 //Mongoose take promise
 mongoose.Promise = global.Promise
@@ -22,6 +24,7 @@ const {UserRouter} = require('./routers')
 //express app initialization
 const app = express()
 
+initTelegramBot()
 
 app.set('view engine','hbs')
 
