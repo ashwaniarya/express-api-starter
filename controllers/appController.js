@@ -1,6 +1,6 @@
 // Dependencies
-const { App } = require('./../models');
-
+const { App ,User} = require('./../models');
+const _ = require('lodash')
 const createNewApp = (data, callback) => {
   App.findOne({name: /data.name/i}, (err, app) => {
     if(err)
@@ -19,6 +19,41 @@ const createNewApp = (data, callback) => {
   });
 }
 
+const findApp = (data,callback)=>{
+
+  App.findOne({_id:data.appKey},(err,app)=>{
+    if(err)
+      return callback(err, 500, null);
+    else if(_.isEmpty(app)){
+      return callback('App not found', 404, null);
+    }
+    else{
+      return callback(null, 200, app);
+    }
+       
+  })
+
+}
+const setTelegramUserId = (data,callback) =>{
+  App.findOne({_id:data.key},(err,app)=>{
+    console.log(app)
+    if(err)
+      return callback(err,500,null)
+    else if(app){
+      app.telegramUserId = data.id
+      app.save((err,success)=>{
+        if(err) return callback(err,500,null)
+        return callback(null,200,success)
+      }) 
+    }
+    else{
+      return callback('App not found',404,null)
+    }
+  })
+}
+
 module.exports = {
-  createNewApp
+  createNewApp,
+  findApp,
+  setTelegramUserId
 }

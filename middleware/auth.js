@@ -31,7 +31,6 @@ const strategy = new JwtStrategy(jwtOptions,(jwt_payload,next)=>{
   })
 })
 
-
 const auth = (req, res, next)=>{
   passport.authenticate('jwt', function(err, user, info) {
     if (err) { return next(err) }

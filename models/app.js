@@ -15,7 +15,13 @@ const appSchema = Schema({
   timestamp: {
     type: Date,
     default: Date.now
-  }
+  },
+  user:{
+    ref:'User',
+    type:Object
+  },
+  telegramGroupId: Number,
+  telegramUserId: Number
 });
 
 const App = mongoose.model('App', appSchema);
