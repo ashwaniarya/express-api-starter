@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI ,{useNewUrlParser: true})
 const {passport} = require('./middleware/auth')
 
 //Routers
-const {UserRouter} = require('./routers')
+const { UserRouter, AppRouter } = require('./routers');
 
 
 //express app initialization
@@ -36,7 +36,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
 
-app.use('/user',UserRouter)
+app.use('/user',UserRouter);
+app.use('/app', AppRouter);
 
 app.get("/",(req,res)=>{
   res.json({message:"Hi From server"})

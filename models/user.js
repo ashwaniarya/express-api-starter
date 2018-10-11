@@ -22,8 +22,9 @@ const userSchema = new Schema({
   },
   activated:{
     type:Schema.Types.Boolean,
-    default:false
-  }
+    default:true
+  },
+  telegramId: Number
 })
 
 userSchema.statics.findByCredentials = function(username,password,callback){
