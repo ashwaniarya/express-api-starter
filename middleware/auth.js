@@ -36,8 +36,10 @@ const auth = (req, res, next)=>{
   passport.authenticate('jwt', function(err, user, info) {
     if (err) { return next(err) }
     if (!user) { return res.status(401).send({err:'unauthorized',data:null}) }
-   next(null,user);
+    req.user = user;
+    next(null,user);
   })(req, res, next)}
+  
 //Apply stratefy to passport
 passport.use(strategy)
 
