@@ -5,7 +5,13 @@ const controllers = require('../controllers')
 
 const {auth} = require('../middleware/auth')
 const {URL} = require('../globals')
-let router = express.Router()
+let router = express.Router();
+
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token, X-Key, Authorization");
+  next();
+});
 
 router.post('/signup',(req,res)=>{
   if(req.body.username && req.body.password && req.body.email){
@@ -140,6 +146,12 @@ router.get("/secret",auth, function(req, res){
   res.json("Success! You can not see this without a token");
 });
 
+// GET '/user/apps' to get user apps
+router.get('/apps', auth, (req, res) => {
+  controllers.appController.getUserApps(req.user._id, (err, status, apps) => {
+    res.status(status).send({err, data: apps});
+  })
+})
 
 
 module.exports = router

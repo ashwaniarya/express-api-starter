@@ -12,7 +12,9 @@ router.use(function(req, res, next) {
 
 // POST '/app' to create new app
 router.post('/', auth, (req, res, next) => {
-  appController.createNewApp(req.body, (err, status, data) => {
+  let data = req.body;
+  data.userid = req.user._id;
+  appController.createNewApp(data, (err, status, data) => {
     res.status(status).send({err, data});
   });
 });

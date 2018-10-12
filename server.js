@@ -29,7 +29,7 @@ initTelegramBot()
 app.set('view engine','hbs')
 
 //Let app to use
-app.use(morgan('combined'))
+app.use(morgan('dev'))
 app.use(passport.initialize())
 
 app.use(bodyParser.urlencoded({extended: true}));

@@ -16,9 +16,10 @@ const appSchema = Schema({
     type: Date,
     default: Date.now
   },
-  user:{
-    ref:'User',
-    type:Object
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true 
   },
   telegramGroupId: Number,
   telegramUserId: Number
