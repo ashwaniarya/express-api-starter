@@ -1,6 +1,7 @@
 // Dependencies
 const { App } = require('./../models');
 const { ObjectId } = require('mongodb');
+const _ = require('lodash')
 
 // Create New App
 const createNewApp = (data, callback) => {
@@ -35,7 +36,42 @@ const getUserApps = (userId, callback) => {
   })
 }
 
+const findApp = (data,callback)=>{
+
+  App.findOne({_id:data.appKey},(err,app)=>{
+    if(err)
+      return callback(err, 500, null);
+    else if(_.isEmpty(app)){
+      return callback('App not found', 404, null);
+    }
+    else{
+      return callback(null, 200, app);
+    }
+       
+  })
+
+}
+const setTelegramUserId = (data,callback) =>{
+  App.findOne({_id:data.key},(err,app)=>{
+    console.log(app)
+    if(err)
+      return callback(err,500,null)
+    else if(app){
+      app.telegramUserId = data.id
+      app.save((err,success)=>{
+        if(err) return callback(err,500,null)
+        return callback(null,200,success)
+      }) 
+    }
+    else{
+      return callback('App not found',404,null)
+    }
+  })
+}
+
 module.exports = {
   createNewApp,
-  getUserApps
+  getUserApps,
+  findApp,
+  setTelegramUserId
 }

@@ -20,7 +20,9 @@ const appSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true 
-  }
+  },
+  telegramGroupId: Number,
+  telegramUserId: Number
 });
 
 const App = mongoose.model('App', appSchema);
