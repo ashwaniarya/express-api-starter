@@ -1,6 +1,8 @@
 const telegramBot = require('node-telegram-bot-api')
 const token = "670739733:AAH2yW6jHlCS3vWP7kUuC3Z0kg3hKp3GWBM"
 const {appController} = require('../controllers')
+const axios = require('axios')
+
 const initTelegramBot = ()=>{
   const api = new telegramBot(token, {polling: true});
 
@@ -29,7 +31,7 @@ const initTelegramBot = ()=>{
           }
           else{
            
-            api.sendMessage(fromId, "User got registered successfully");
+            api.sendMessage(fromId, "User registered successfully");
           }
         })
         
@@ -39,48 +41,58 @@ const initTelegramBot = ()=>{
       }
 
     }
-    else if(msg.chat.type === "group"){
+    else if(msg.chat.type === "group" || msg.chat.type === "supergroup"){
       console.log('Group Message')
       fromId = msg.chat.id
-
+      let exMessage = msg.text
       if(exMessage.search(rexRegisterGroup) === 0){
         key = exMessage.split(' ')[1]
         console.log('Got some key')
-        // appController.setTelegramUserId({key,id:fromId},(err,status,data)=>{
-        //   console.log(`ERR: ${err} STATUS: ${status} DATA: ${data}`)
-        //   if(err){
-        //     api.sendMessage(fromId, err);
-        //   }
-        //   else{
-           
-        //     api.sendMessage(fromId, "User got registered successfully");
-        //   }
-        // })
-        api.sendMessage(fromId, "Group got registered successfully");
+
+        appController.setTelegramGroupId({key,id:fromId},(err,status,data)=>{
+          console.log(`ERR: ${err} STATUS: ${status} DATA: ${data}`)
+          if(err){
+            api.sendMessage(fromId, err);
+          }
+          else{
+            api.deleteMessage(fromId,msg["message_id"]).then(status=>{
+              console.log(status)
+            })
+            api.sendMessage(fromId, "Group registered successfully");
+          }
+        })
+        
       }
       else{
-        api.sendMessage(fromId, "No user commands");
+        fromId = msg.chat.id
+        let text = msg.text
+        appController.findAppByGroupId({id:fromId},(err,status,data)=>{
+          console.log(`ERR: ${err} STATUS: ${status} DATA: ${data}`)
+          if(err){
+            api.sendMessage(fromId, err);
+          }
+          else{
+            console.log(data)
+            let url = 'http://127.0.0.1:9797/'+text
+            axios.get(url)
+              .then(res=>{
+                
+                let response = res.data
+                console.log('Confidence : ',response.classes[0].confidence)
+                if(response.classes[0].confidence > 0.3){
+                  api.deleteMessage(fromId,msg["message_id"]).then(status=>{
+                    console.log(status)
+                  })
+                }
+                
+              })
+              .catch(e=>{
+                console.log('Error')
+              })
+            
+          }
+        })
       }
-    }
-    else if(msg.chat.type === "supergroup"){
-      
-      fromId = msg.chat.id
-      message = "Message Got deleted"
-      
-      //console.log('CHATID :',fromId,'  MESSAGE : ',messageId)
-
-      // api.deleteMessage(fromId, message_id).then(status=>{
-      //   console.log(statu)
-      //   api.sendMessage(fromId,'Message got deleted');
-      // })
-      // api.deleteMessage(fromid,Str(messageId),(status)=>{
-      //   console.log(status)
-      // })
-      
-      api.deleteMessage(fromId,msg["message_id"]).then(status=>{
-        console.log(status)
-      })
-      //api.sendMessage(fromId,'In Super user');
     }
     else{
       

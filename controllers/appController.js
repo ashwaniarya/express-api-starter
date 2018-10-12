@@ -34,15 +34,30 @@ const findApp = (data,callback)=>{
   })
 
 }
+
+const findAppByGroupId = (data,callback)=>{
+  App.findOne({telegramGroupId:data.id},(err,app)=>{
+    if(err)
+      return callback(err, 500, null);
+    else if(_.isEmpty(app)){
+      return callback('App not found', 404, null);
+    }
+    else{
+      return callback(null, 200, app);
+    }
+       
+  })
+}
+
 const setTelegramUserId = (data,callback) =>{
   App.findOne({_id:data.key},(err,app)=>{
     console.log(app)
     if(err)
-      return callback(err,500,null)
+      return callback('Some internal error, contact checkPost support',500,null)
     else if(app){
       app.telegramUserId = data.id
       app.save((err,success)=>{
-        if(err) return callback(err,500,null)
+        if(err) return callback('Some internal error, contact checkPost support',500,null)
         return callback(null,200,success)
       }) 
     }
@@ -52,8 +67,44 @@ const setTelegramUserId = (data,callback) =>{
   })
 }
 
+const setTelegramGroupId = (data,callback)=>{
+  App.findOne({_id:data.key},(err,app)=>{
+    console.log(app)
+    if(err)
+      return callback('Some internal error, contact checkPost support',500,null)
+    else if(app){
+      app.telegramGroupId = data.id
+      app.save((err,success)=>{
+        if(err) return callback('Some internal error, contact checkPost support',500,null)
+        return callback(null,200,success)
+      })
+    }else{
+      callback('App not found',404,null)
+    }
+
+  })
+}
+
+const evaluate = (data,callback)=>{
+  let url = 'http://127.0.0.1:9797/'+data.text
+  axios.get(url)
+    .then(res=>{
+      
+      let response = res.data
+      return callback(null,200,response)
+      
+    })
+    .catch(e=>{
+      console.log('Error')
+      return callback('Internal error please contact CheckPost',200,response)
+    })
+            
+}
 module.exports = {
   createNewApp,
   findApp,
-  setTelegramUserId
+  setTelegramGroupId,
+  setTelegramUserId,
+  findAppByGroupId,
+  evaluate
 }
