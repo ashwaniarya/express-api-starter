@@ -2,6 +2,7 @@
 const { App } = require('./../models');
 const { ObjectId } = require('mongodb');
 const _ = require('lodash')
+const axios = require('axios')
 
 // Create New App
 const createNewApp = (data, callback) => {
@@ -113,7 +114,7 @@ const evaluate = (data,callback)=>{
     })
     .catch(e=>{
       console.log('Error')
-      return callback('Internal error please contact CheckPost',200,response)
+      return callback('Internal error please contact CheckPost',500,response)
     })
             
 }

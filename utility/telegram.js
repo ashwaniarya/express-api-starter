@@ -1,8 +1,10 @@
 const telegramBot = require('node-telegram-bot-api')
-const token = "670739733:AAH2yW6jHlCS3vWP7kUuC3Z0kg3hKp3GWBM"
+const dotenv = require('dotenv')
 const {appController} = require('../controllers')
 const axios = require('axios')
 
+dotenv.load()
+const token = process.env.TELEGRAM_BOT
 const initTelegramBot = ()=>{
   const api = new telegramBot(token, {polling: true});
 
@@ -78,10 +80,15 @@ const initTelegramBot = ()=>{
               .then(res=>{
                 
                 let response = res.data
-                console.log('Confidence : ',response.classes[0].confidence)
-                if(response.classes[0].confidence > 0.3){
+                console.log('Hate Speech Confidence : ',response.classes[0].confidence)
+                console.log('Offensive Confidence : ',response.classes[1].confidence)
+                if(response.classes[0].confidence > 0.6 || response.classes[1].confidence > 0.6){
+                  console.log('FROM ID',fromId,' MESSAGE ID: ',msg["message_id"])
                   api.deleteMessage(fromId,msg["message_id"]).then(status=>{
                     console.log(status)
+                  })
+                  .catch(e=>{
+                    console.log(e)
                   })
                 }
                 
