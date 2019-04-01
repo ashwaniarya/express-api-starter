@@ -20,7 +20,7 @@ router.post('/', auth, (req, res, next) => {
 });
 
 // POST '/app/evaluate' to evaluate text for hate speech
-router.post('/evaluate', auth, (req, res, next) => {
+router.post('/evaluate', (req, res, next) => {
   appController.evaluate(req.body, (err, status, data) => {
     res.status(status).send({err, data});
   })
