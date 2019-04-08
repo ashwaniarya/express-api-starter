@@ -114,7 +114,7 @@ const evaluate = (data,callback)=>{
     })
     .catch(e=>{
       console.log('Error')
-      return callback('Internal error please contact CheckPost',500,response)
+      return callback('Internal error please contact CheckPost',500,e)
     })
             
 }

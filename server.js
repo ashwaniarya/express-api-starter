@@ -35,6 +35,12 @@ app.use(passport.initialize())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+  console.log(req.path)
+  next();
+})
+
+app.use(express.static(__dirname+'/views'))
 
 app.use('/user',UserRouter);
 app.use('/app', AppRouter);

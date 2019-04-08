@@ -35,9 +35,15 @@ const actvateUser = (userid,callback)=>{
     return callback('Internal error',500,null)
   })
 }
-const addUser = (username,email,password,callback)=>{
+const addUser = async (name,email,password,callback)=>{
+
+  let user = await User.findOne({ email });
+
+  if(user)
+    return callback('Email already registered!', 400, null);
+
   let newUser = new User({
-    username,
+    name,
     password,
     email
   })
@@ -47,13 +53,7 @@ const addUser = (username,email,password,callback)=>{
       return callback(null,200,{activated:user.activated,username:user.username,email:user.email})
     })
     .catch(e=>{
-      
-      if(e.code === 11000)
-        return callback('username or email already exists',401,null)
-      else{
-        return callback('Internal server error',500,null)
-      }
-      
+      return callback(e.toString(),500,null)
     })
 }
 

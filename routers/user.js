@@ -14,11 +14,11 @@ router.use(function(req, res, next) {
 });
 
 router.post('/signup',(req,res)=>{
-  if(req.body.username && req.body.password && req.body.email){
-    let username = req.body.username
+  if(req.body.name && req.body.password && req.body.email){
+    let name = req.body.name
     let password = req.body.password
     let email = req.body.email
-    controllers.user.addUser(username,email,password,(err,status,data)=>{
+    controllers.user.addUser(name,email,password,(err,status,data)=>{
       if(status === 200){
         res.send({err,status,data})
       }
@@ -33,15 +33,15 @@ router.post('/signup',(req,res)=>{
 })
 
 router.post('/login',(req,res)=>{
-  if(req.body.username && req.body.password){
-    let username = req.body.username
+  if(req.body.email && req.body.password){
+    let email = req.body.email
     let password = req.body.password
-    controllers.user.getAccessToken(username,password,(err,status,data)=>{
+    controllers.user.getAccessToken(email,password,(err,status,data)=>{
       if(status === 200){
         if(data.user.activated){
           res.send({err,status,data})
         } else {
-          controllers.email.sendActivationLink(`${URL}/user/activate/${data.user._id}`,data.user.email)
+          //controllers.email.sendActivationLink(`${URL}/user/activate/${data.user._id}`,data.user.email)
           res.send({err,status,data:{user:{activated:false}}})            
         }
         
