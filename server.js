@@ -24,7 +24,7 @@ const { UserRouter, AppRouter } = require('./routers');
 //express app initialization
 const app = express()
 
-initTelegramBot()
+// initTelegramBot()
 
 app.set('view engine','hbs')
 

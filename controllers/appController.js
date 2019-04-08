@@ -109,11 +109,19 @@ const evaluate = (data,callback)=>{
     .then(res=>{
       
       let response = res.data
+      var responseArray = response.split("")
+      var newArray = responseArray.map(item=>{
+        if(item === "'")
+          item = '"'
+        return item
+      })
+
+      response = JSON.parse(newArray.join(""))
       return callback(null,200,response)
       
     })
     .catch(e=>{
-      console.log('Error')
+      console.log(e)
       return callback('Internal error please contact CheckPost',500,e)
     })
             
