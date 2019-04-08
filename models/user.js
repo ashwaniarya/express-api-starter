@@ -6,10 +6,9 @@ const _ = require('lodash')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-  username:{
+  name:{
     type:Schema.Types.String,
     required:true,
-    unique:true
   },
   password:{
     type:Schema.Types.String,
@@ -26,15 +25,15 @@ const userSchema = new Schema({
   }
 })
 
-userSchema.statics.findByCredentials = function(username,password,callback){
+userSchema.statics.findByCredentials = function(email,password,callback){
   let User = this
-  User.findOne({username},(err,user)=>{
+  User.findOne({ email },(err,user)=>{
     
     if(err) return callback('Internal server error',500,null) 
     if(!user)  return callback('User not found',401,null)
     bcrypt.compare(password,user.password,(err,result)=>{
       if(result) return callback(null,200,user)
-      else return callback('Failed to match username or password',401,null)
+      else return callback('Failed to match email or password',401,null)
     })
     
   })

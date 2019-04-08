@@ -108,7 +108,7 @@ const initTelegramBot = ()=>{
     
   });
 
-  console.log("MadansFirstTelegramBot has started. Start conversations in your Telegram.");
+  console.log("Telegram Bot has started. Start conversations in your Telegram.");
 }
 
 module.exports = {
