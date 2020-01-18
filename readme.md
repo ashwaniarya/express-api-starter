@@ -17,7 +17,7 @@ $ npm install
 ## BASIC FEATURES OF PACKAGE
 * The package consists of API authenticatin using passport-jwt and jsonwebtokens
 * User entry gateway.
-* Uset activation link sent to email
+* User activation link sent to email
 
 ## ENDPOINTS
 ### POST /user/signup
@@ -79,4 +79,4 @@ const URL = 'http://localhost:3000'
 Email via Google OAUTH
 ## CONCLUSION
 
-Please support if you link this package.
+Please support if you like this package.
